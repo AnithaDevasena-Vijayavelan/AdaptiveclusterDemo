@@ -1,5 +1,8 @@
 package Websocket_adaptivecluster.Websocket_adaptivecluster;
 
+
+//websocket is the network protocol used for transmitting data in a secure manner
+//its mostly used by the trading webservice to show their market value
 import java.util.function.Consumer;
 import java.util.logging.Level;
 
