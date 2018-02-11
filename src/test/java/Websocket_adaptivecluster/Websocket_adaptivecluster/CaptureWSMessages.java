@@ -1,5 +1,6 @@
 package Websocket_adaptivecluster.Websocket_adaptivecluster;
 
+import java.util.function.Consumer;
 import java.util.logging.Level;
 
 import org.json.JSONObject;
@@ -36,14 +37,17 @@ public class CaptureWSMessages {
         //To close Google Chrome
         driver.close();
         driver.quit();
-        logEntries.forEach(entry->{
-            JSONObject messageJSON = new JSONObject(entry.getMessage());
-            String method = messageJSON.getJSONObject("message").getString("method");
-            if(method.equalsIgnoreCase("Network.webSocketFrameSent")){
-                System.out.println("Message Sent: " + messageJSON.getJSONObject("message").getJSONObject("params").getJSONObject("response").getString("payloadData"));
-            }else if(method.equalsIgnoreCase("Network.webSocketFrameReceived")){
-                System.out.println("Message Received: " + messageJSON.getJSONObject("message").getJSONObject("params").getJSONObject("response").getString("payloadData"));
-            }
-        });
+        
+        logEntries.forEach(new Consumer<LogEntry>() {
+			public void accept(LogEntry entry) {
+			    JSONObject messageJSON = new JSONObject(entry.getMessage());
+			    String method = messageJSON.getJSONObject("message").getString("method");
+			    if(method.equalsIgnoreCase("Network.webSocketFrameSent")){
+			        System.out.println("Message Sent: " + messageJSON.getJSONObject("message").getJSONObject("params").getJSONObject("response").getString("payloadData"));
+			    }else if(method.equalsIgnoreCase("Network.webSocketFrameReceived")){
+			        System.out.println("Message Received: " + messageJSON.getJSONObject("message").getJSONObject("params").getJSONObject("response").getString("payloadData"));
+			    }
+			}
+		});
     }
 }
